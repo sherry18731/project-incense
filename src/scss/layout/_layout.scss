@@ -1,0 +1,12 @@
+.front-nav-link {
+  border: 1px solid transparent;
+  border-image-slice: 1;
+  transition: border-image-source 0.3s ease;
+  
+  &:hover {
+    border-image-source: radial-gradient(60% 60%, transparent 0px, transparent 100%, $primary-03 80%);
+    border-image-slice: 1;
+    border-width: 1px;
+    color: $primary-02 !important;
+  }
+}

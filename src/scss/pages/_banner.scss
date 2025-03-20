@@ -1,0 +1,83 @@
+.banner {
+  position: relative;
+  min-height: 400px;
+  width: 100%;
+}
+.banner .banner-wrap {
+  // -webkit-animation: banner-slider 60s infinite linear;
+  // -moz-animation: banner-slider 60s infinite linear;
+  // -o-animation: banner-slider 60s infinite linear;
+  // animation: banner-slider 60s infinite linear;
+  display: flex;
+  width: 200%; /* 兩張圖片並排 */
+  animation: banner-slider 60s linear infinite;
+}
+
+.banner span, .banner span:after {
+  display: block;
+  min-height: 400px;
+  width: 100%; background:url('https://firebasestorage.googleapis.com/v0/b/homework-b5f67.appspot.com/o/project-incenseWeb%2Fbanner-04.png?alt=media&token=95eac2c6-f02f-45ef-9d25-2bc93a8e284e')  top left repeat-x;
+}
+.banner span:after {
+  background-position: top right;
+  content: "";
+  -webkit-transform: translate(-100%, 0);
+  -moz-transform: translate(-100%, 0);
+  -ms-transform: translate(-100%, 0);
+  -o-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+
+@-webkit-keyframes banner-slider {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    -webkit-transform: translate3d(783px, 0, 0);
+    -moz-transform: translate3d(783px, 0, 0);
+    -ms-transform: translate3d(783px, 0, 0);
+    -o-transform: translate3d(783px, 0, 0);
+    transform: translate3d(783px, 0, 0);
+  }
+}
+
+@-moz-keyframes banner-slider {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    -webkit-transform: translate3d(783px, 0, 0);
+    -moz-transform: translate3d(783px, 0, 0);
+    -ms-transform: translate3d(783px, 0, 0);
+    -o-transform: translate3d(783px, 0, 0);
+    transform: translate3d(783px, 0, 0);
+  }
+}
+
+@keyframes banner-slider {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    -webkit-transform: translate3d(783px, 0, 0);
+    -moz-transform: translate3d(783px, 0, 0);
+    -ms-transform: translate3d(783px, 0, 0);
+    -o-transform: translate3d(783px, 0, 0);
+    transform: translate3d(783px, 0, 0);
+  }
+}

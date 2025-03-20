@@ -1,0 +1,33 @@
+@mixin hover-color($color) {
+  color: $color;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: darken($color, 10%); // hover 时颜色变暗
+  }
+}
+
+// 动态生成样式
+@each $name, $color in $colors {
+  .hover-#{$name} {
+    @include hover-color($color);
+  }
+}
+
+@mixin hover-effect($color) {
+  color: $color;
+  transition: color 0.3s ease, background-color 0.3s ease;
+
+  &:hover {
+    color: darken($color, 10%); // 使颜色变暗
+    background-color: lighten($color, 20%); // 背景色变亮
+  }
+}
+
+// 遍历所有颜色并生成相应的 hover 效果
+@each $name, $color in $colors {
+  .text-#{$name} {
+    @include hover-effect($color);
+  }
+}
+

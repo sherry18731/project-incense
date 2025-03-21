@@ -25,6 +25,7 @@ export default function FrontLayout() {
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/cart`);
       setCartData(res.data.data);
     } catch (error) {
+      console.log(error)
     }
   }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { pushMessage } from "../redux/toastSlice";
 
@@ -35,20 +35,20 @@ function OrderModal({ closeProductModal, getOrders, tempOrder }) {
   const submit = async () => {
     setIsLoading(true);
     try {
-      let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${tempOrder.id}`;
+      let api = `${BASE_URL}/v2/api/${API_PATH}/admin/order/${tempOrder.id}`;
       const res = await axios.put(api, {
         data: {
           ...tempData,
         },
       });
       console.log(res);
-      // handleSuccessMessage(dispatch, res);
+      dispatch(pushMessage({ text: "成功修改訂單", status: "success" }));
       setIsLoading(false);
+      closeProductModal();
       getOrders();
     } catch (error) {
-      console.log(error);
+      dispatch(pushMessage({ text: "修改訂單失敗", status: "danger", error }));
       setIsLoading(false);
-      // handleErrorMessage(dispatch, error);
     }
   };
 
@@ -99,7 +99,7 @@ function OrderModal({ closeProductModal, getOrders, tempOrder }) {
               </div>
             </div>
             <div className='mb-3 row'>
-              <span className='col-sm-2 col-form-label'>外送地址</span>
+              <span className='col-sm-2 col-form-label'>地址</span>
               <div className='col-sm-10'>
                 <input
                   type='text'
@@ -127,6 +127,7 @@ function OrderModal({ closeProductModal, getOrders, tempOrder }) {
                 <thead>
                   <tr>
                     <th>品項名稱</th>
+                    <th>時間</th>
                     <th>數量</th>
                   </tr>
                 </thead>
@@ -134,12 +135,14 @@ function OrderModal({ closeProductModal, getOrders, tempOrder }) {
                   {Object.values(tempOrder.products).map((cart) => (
                     <tr key={cart.id}>
                       <td>{cart.product.title}</td>
+                      <td>{cart.product.dute}</td>
                       <td>{cart.qty}</td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
                   <tr>
+                    <td className='border-0'></td>
                     <td className='border-0 text-end'>總金額</td>
                     <td className='border-0'>${tempOrder.total}</td>
                   </tr>
@@ -165,7 +168,7 @@ function OrderModal({ closeProductModal, getOrders, tempOrder }) {
               </div>
               <div className='mb-4'>
                 <span className='col-sm-2 col-form-label d-block'>
-                  外送進度
+                  課程進度
                 </span>
                 <select
                   className='form-select'
@@ -174,10 +177,9 @@ function OrderModal({ closeProductModal, getOrders, tempOrder }) {
                   onChange={handleChange}
                   disabled={isLoading}
                 >
-                  <option value={0}>未確認</option>
-                  <option value={1}>已確認</option>
-                  <option value={2}>外送中</option>
-                  <option value={3}>已送達</option>
+                  <option value={0}>未成團</option>
+                  <option value={1}>已成團</option>
+                  <option value={2}>已結束</option>
                 </select>
               </div>
             </div>

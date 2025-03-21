@@ -25,18 +25,19 @@ export default function ActivitieDetail() {
       setProduct(res.data.product)
     } catch (error) {
       // alert("取得產品失敗",error);
-      dispatch(pushMessage({ text: "取得產品失敗", status: "danger" }));
+      dispatch(pushMessage({ text: "取得產品失敗", status: "danger", error }));
     }
   };
 
   useEffect(() => {
     getProduct(id)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
 
   const addCartItem = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.post(`${BASE_URL}/v2/api/${API_PATH}/cart`, {
+      await axios.post(`${BASE_URL}/v2/api/${API_PATH}/cart`, {
         data: {
           product_id: product.id,
           qty: qtySelect
@@ -45,7 +46,7 @@ export default function ActivitieDetail() {
       dispatch(pushMessage({ text: "成功加入購物車", status: "success" }));
       getCart();
     } catch (error) {
-      dispatch(pushMessage({ text: "加入購物車失敗", status: "danger" }));
+      dispatch(pushMessage({ text: "加入購物車失敗", status: "danger", error }));
     } finally {
       setIsLoading(false);
     }
@@ -53,21 +54,24 @@ export default function ActivitieDetail() {
 
   return (<>
     <div className="container">
-      {/* <div
-        style={{
-          minHeight: 400,
-          backgroundImage:
-            `url(${product.imageUrl})`,
-          backgroundPosition: "center center"
-        }}
-      ></div> */}
+
       <div className="row justify-content-center mt-4 mb-7">
-        <div className="col-md-7">
+        <div className="col-9">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">首頁</a></li>
+            <li class="breadcrumb-item"><a href="#">近期活動</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{product.title}</li>
+          </ol>
+        </nav>
+        </div>
+        <div className="col-md-4">
+        
           <div>
             <img
               src={product.imageUrl}
-              alt=""
-              className="img-fluid"
+              alt="{product.title}"
+              className="img-fluid rounded"
             />
           </div>
           {/* <div
@@ -154,16 +158,26 @@ export default function ActivitieDetail() {
             </div>
           </div> */}
         </div>
-        <div className="col-md-4 d-flex flex-column pt-lg-5">
+        <div className="col-md-5 d-flex flex-column">
+          <div>
+            <span class="badge fw-normal text-bg-primary-04 text-primary-01 mb-3">{product.category}</span>
+          </div>
           <h2 className="fs-5">{product.title}</h2>
-          <p className="fw-bold mb-4">NT${product.price?.toLocaleString()}</p>
-          <p>
-            {product.description}
-          </p>
-          <div className="input-group mb-3 border mt-3">
+          
+          <p className="mb-3">地點： {product.location}</p>
+          <p className="mb-3">時間： {new Date(product.date).toLocaleString()}</p>
+          <p className="mb-3">人數： {product.unit} 位</p>
+          <p className="mb-5">{product.content}</p>
+          
+          <div className="d-flex align-items-center mb-2">
+            <p className="fs-8 text-theme-red-01 fw-semibold me-3">NT$ {product.price?.toLocaleString()}</p>
+            <p className="fs-9 text-gray-03 text-decoration-line-through">NT$ {product.origin_price?.toLocaleString()}</p>
+          </div>
+          <div className="input-group align-items-center rounded mt-3 mb-3">
+          <span class="me-5">報名人數</span>
             <div className="input-group-prepend">
               <button
-                className="btn btn-primary-04 rounded-0 border-0 py-3"
+                className="btn btn-primary-04 rounded border-0 py-2"
                 type="button"
                 id="button-addon1"
                 onClick={() => setQtySelect((pre) => pre ===1 ? pre : pre - 1)}
@@ -173,7 +187,7 @@ export default function ActivitieDetail() {
             </div>
             <input
               type="text"
-              className="form-control border-0 text-center my-auto shadow-none"
+              className="form-control border-0 text-center shadow-none"
               placeholder=""
               aria-label="Example text with button addon"
               aria-describedby="button-addon1"
@@ -182,7 +196,7 @@ export default function ActivitieDetail() {
             />
             <div className="input-group-append">
               <button
-                className="btn btn-primary-04 rounded-0 border-0 py-3"
+                className="btn btn-primary-04 rounded border-0 py-2"
                 type="button"
                 id="button-addon2"
                 onClick={() => setQtySelect((pre) => pre + 1)}
@@ -193,7 +207,7 @@ export default function ActivitieDetail() {
           </div>
           <button
             type="button"
-            className="position-relative btn btn-primary-03 text-primary-01 rounded-0 py-3 w-100"
+            className="position-relative btn btn-primary-03 text-primary-01 rounded py-3 w-100"
             onClick={() => addCartItem()}
             disabled={isLoading}
           >

@@ -63,7 +63,7 @@ export default function Navbar({ routes, cartData }) {
                 to={routes.path}>
                 <i className={`bi bi-${routes.icon} me-1`}></i>
                 {routes.name !== "購物車" ? `${routes.name}` : 
-                <span className="position-absolute top-25 start-75 translate-middle badge rounded-pill bg-theme-red-01">{cartData.carts?.length}</span> }
+                <span className="position-absolute top-25 start-75 translate-middle badge rounded-pill bg-primary-02">{cartData.carts?.length}</span> }
                 </NavLink>
                 {/* {cartData.carts?.length} */}
               </li>

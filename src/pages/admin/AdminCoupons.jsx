@@ -5,7 +5,8 @@ import CouponModal from "../../components/CouponModal";
 import DelCouponModal from "../../components/DelCouponModal";
 import Toast from "../../components/Toast";
 import { useDispatch } from "react-redux";
-import { pushMessage } from "../../redux/toastSlice";
+// import { pushMessage } from "../../redux/toastSlice";
+import Loading from '../../components/Loading';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -18,29 +19,36 @@ const defaultModalState = {
   code: ""
 };
 
-function AdminCoupons({ setIsAuth }) {
+function AdminCoupons() {
   const [coupons, setCoupons] = useState([]);
   const [modalMode, setModalMode] = useState(null);
   const [isCouponsModalOpen, setIsCouponsModalOpen] = useState(false);
   const [isDelCouponsModalOpen, setIsDelCouponsModalOpen] = useState(false);
   const [tempCoupon, setTempCoupon] = useState(defaultModalState);
+  const [isScreenLoading, setIsScreenLoading] = useState(false)
+  // eslint-disable-next-line no-unused-vars
   const [date, setDate] = useState(new Date());
   const dispatch = useDispatch();
 
   const getCoupons = async (page = 1) => {
+    setIsScreenLoading(true);
     try {
       const res = await axios.get(
         `${BASE_URL}/v2/api/${API_PATH}/admin/coupons?page=${page}`
       );
       setCoupons(res.data.coupons);
       setPageInfo(res.data.pagination);
+      dispatch()
     } catch (error) {
       alert("取得產品失敗",error);
+    } finally {
+      setIsScreenLoading(false);
     }
   };
 
   useEffect(() => {
     getCoupons()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
 
@@ -85,11 +93,13 @@ const handleOpenDelCouponModal = (item) => {
 
   useEffect(() => {
     getCoupons()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
     <>
       <div className="container py-5">
+        <Loading isScreenLoading={isScreenLoading}/>
         <div className="row">
           <div className="col">
             <div className="d-flex justify-content-between">

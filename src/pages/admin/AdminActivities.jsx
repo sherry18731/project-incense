@@ -6,6 +6,7 @@ import DelProductModal from "../../components/DelProductModal";
 import Toast from "../../components/Toast";
 import { useDispatch } from "react-redux";
 import { pushMessage } from "../../redux/toastSlice";
+import Loading from '../../components/Loading';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -25,14 +26,16 @@ const defaultModalState = {
   location: ""
 };
 
-function AdminActivities({ setIsAuth }) {
+function AdminActivities() {
   const [products, setProducts] = useState([])
   const [modalMode, setModalMode] = useState(null)
   const [isProductsModalOpen, setIsProductsModalOpen] = useState(false)
   const [isDelProductsModalOpen, setIsDelProductsModalOpen] = useState(false)
+  const [isScreenLoading, setIsScreenLoading] = useState(false)
   const dispatch = useDispatch();
 
   const getProducts = async (page = 1) => {
+    setIsScreenLoading(true);
     try {
       const res = await axios.get(
         `${BASE_URL}/v2/api/${API_PATH}/admin/products?page=${page}`
@@ -41,11 +44,15 @@ function AdminActivities({ setIsAuth }) {
       setPageInfo(res.data.pagination);
     } catch (error) {
       alert("取得產品失敗",error);
+      dispatch(pushMessage({ text: "取得產品失敗", status: "danger", error }));
+    } finally {
+      setIsScreenLoading(false);
     }
   };
 
   useEffect(() => {
     getProducts()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
 
@@ -87,11 +94,13 @@ const [tempProduct, setTempProduct] = useState(defaultModalState);
 
   useEffect(() => {
     getProducts()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
     <>
       <div className="container py-5">
+        <Loading isScreenLoading={isScreenLoading}/>
         <div className="row">
           <div className="col">
             <div className="d-flex justify-content-between">

@@ -3,6 +3,7 @@ import axios from "axios";
 import OrderModal from "../../components/OrderModal";
 import Pagination from "../../components/Pagination";
 import { Modal } from "bootstrap";
+import Loading from '../../components/Loading';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -11,8 +12,9 @@ function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [pagination, setPagination] = useState({});
   // type: 決定 modal 展開的用途
-  const [type, setType] = useState('create'); // edit
+  // const [type, setType] = useState('create'); // edit
   const [tempOrder, setTempOrder] = useState({});
+  const [isScreenLoading, setIsScreenLoading] = useState(false)
 
   const orderModal = useRef(null);
   useEffect(() => {
@@ -24,10 +26,17 @@ function AdminOrders() {
   }, []);
 
   const getOrders = async (page = 1) => {
-    const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/admin/orders?page=${page}`);
-    console.log(res);
-    setOrders(res.data.orders);
-    setPagination(res.data.pagination);
+    setIsScreenLoading(true);
+    try {
+      const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/admin/orders?page=${page}`);
+      console.log(res);
+      setOrders(res.data.orders);
+      setPagination(res.data.pagination);
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsScreenLoading(false);
+    }
   }
 
   const openOrderModal = (order) => {
@@ -41,6 +50,7 @@ function AdminOrders() {
 
   return (
     <div className='p-3'>
+      <Loading isScreenLoading={isScreenLoading}/>
       <OrderModal
         closeProductModal={closeOrderModal}
         getOrders={getOrders}
@@ -53,6 +63,7 @@ function AdminOrders() {
           <tr>
             <th scope='col'>訂單 id</th>
             <th scope='col'>購買用戶</th>
+            <th scope='col'>用戶信箱</th>
             <th scope='col'>訂單金額</th>
             <th scope='col'>付款狀態</th>
             <th scope='col'>付款日期</th>
@@ -67,8 +78,9 @@ function AdminOrders() {
                 <td>{order.id}</td>
                 <td>
                   {order.user?.name}
-                  {order.user?.email}
+                  
                 </td>
+                <td>{order.user?.email}</td>
                 <td>${order.total}</td>
                 <td>
                   {order.is_paid ? (
@@ -100,7 +112,7 @@ function AdminOrders() {
           })}
         </tbody>
       </table>
-      {/* <Pagination pagination={pagination} handlePageChange={getOrders} /> */}
+      <Pagination pageInfo={pagination} handlePageChange={getOrders} />
     </div>
   );
 }

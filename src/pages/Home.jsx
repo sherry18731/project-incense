@@ -27,18 +27,21 @@ export default function Home() {
       </div>
     </section>
     
-    <section style={{
+    <section 
+      style={{
       background: `url("https://firebasestorage.googleapis.com/v0/b/homework-b5f67.appspot.com/o/project-incenseWeb%2Fbg-01-opa.png?alt=media&token=a4577b6b-7846-4009-9a81-9e33031482ee")`,
       backgroundAttachment: 'fixed',
       }}  
       className="bg-brand-03">
-      <div className='row justify-content-center'>
-        <div className="col-10 col-lg-6 d-flex flex-column align-items-center gap-3 bg-brand-03 bg-opacity-50 rounded-4 text-center my-30 py-12">
-          <h3 data-aos="fade-down" className='text-primary-01 fs-4 fw-bold hina-mincho-regular border-bottom border-primary-02 w-75 pb-5'>體驗不同的香聚</h3>
-          <p data-aos="fade-up" className='text-primary-02 fs-7'>串串香。製作香串體驗</p>
-          <p data-aos="fade-up" className='text-primary-02 fs-7'>柱柱香。製作線香體驗</p>
-          <p data-aos="fade-up" className='text-primary-02 fs-7'>朵朵香。香席品鑑沉香</p>
-          <p data-aos="fade-up" className='text-primary-02 fs-7'>粉粉香。香篆靜心聞香</p>
+      <div className='container'>
+        <div className='row justify-content-center'>
+          <div className="col-10 col-lg-6 d-flex flex-column align-items-center gap-3 bg-brand-03 bg-opacity-50 rounded-4 text-center my-30 py-12">
+            <h3 data-aos="fade-down" className='text-primary-01 fs-4 fw-bold hina-mincho-regular border-bottom border-primary-02 pb-5'>體驗不同的香聚</h3>
+            <p data-aos="fade-up" className='text-primary-02 fs-7'>串串香。製作香串體驗</p>
+            <p data-aos="fade-up" className='text-primary-02 fs-7'>柱柱香。製作線香體驗</p>
+            <p data-aos="fade-up" className='text-primary-02 fs-7'>朵朵香。香席品鑑沉香</p>
+            <p data-aos="fade-up" className='text-primary-02 fs-7'>粉粉香。香篆靜心聞香</p>
+          </div>
         </div>
       </div>
     </section>

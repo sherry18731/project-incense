@@ -10,7 +10,6 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 export default function ActivitiesPage() {
   const [products, setProducts] = useState([]);
   const [isScreenLoading, setIsScreenLoading] = useState(false)
-  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false)
   const [pageInfo, setPageInfo] = useState({})
 

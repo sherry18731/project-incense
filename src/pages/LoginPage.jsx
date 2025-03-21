@@ -13,8 +13,8 @@ export default function LoginPage() {
   
   const [loginState, setLoginState] = useState({});
   const [account, setAccount] = useState({
-    username: "shw18731@gmail.com",
-    password: "qaz123wsx456",
+    username: "",
+    password: "",
   });
   
   const handleInputChange = (e) => {

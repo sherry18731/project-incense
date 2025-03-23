@@ -52,7 +52,6 @@ function AdminActivities() {
 
   useEffect(() => {
     getProducts()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
 
@@ -94,7 +93,6 @@ const [tempProduct, setTempProduct] = useState(defaultModalState);
 
   useEffect(() => {
     getProducts()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (

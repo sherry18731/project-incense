@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import Pagination from "../components/Pagination";
 import Loading from "../components/Loading";
+import Search from "../components/Search";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -53,6 +54,10 @@ export default function ActivitiesPage() {
       <Loading isScreenLoading={isScreenLoading}/>
         <div className="row justify-content-center">
           <div className="col-lg-8 col-md-10">
+          <div className="d-flex justify-content-between mb-3">
+              <h2 className="fs-5 hina-mincho-regular text-primary-02">香遇的日子</h2>
+              {/* <Search /> */}
+            </div>
             <div className="row row-cols-1 g-5 mb-5">
               {
                 products.map((product) => (
@@ -65,7 +70,7 @@ export default function ActivitiesPage() {
                           alt={product.title}
                           style={{height: "180px"}}
                         />
-                        <span class="position-absolute top-0 start-0 badge fw-normal text-bg-primary-04 text-primary-01 m-3">{product.category}</span>
+                        <span className="position-absolute top-0 start-0 badge fw-normal text-bg-primary-04 text-primary-01 m-3">{product.category}</span>
                       </div>
                       <div className="card-body bg-gray-04 d-flex flex-column p-2">
                         <h4 className="my-1">{product.title}</h4>
@@ -80,7 +85,7 @@ export default function ActivitiesPage() {
                         <p className="">時間： {new Date(product.date).toLocaleString()}</p> */}
                         <div className="d-flex justify-content-end mt-auto">
                           <Link to={`/product/${product.id}`} className="btn-sm btn btn-outline-primary-03 text-primary-01 me-3">活動詳情</Link>
-                          <Link onClick={addCartItem} to={`/product/${product.id}`} className="btn-sm btn btn-primary-03 text-primary-01">加入購物車</Link>
+                          {/* <Link onClick={addCartItem} to={`/product/${product.id}`} className="btn-sm btn btn-primary-03 text-primary-01">加入購物車</Link> */}
                         </div>
                       </div>
                     </div>

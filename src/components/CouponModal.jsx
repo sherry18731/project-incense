@@ -17,7 +17,8 @@ function CouponModal({modalMode, tempCoupon, isOpen, setIsOpen, getCoupons}) {
     setModalData({
       ...tempCoupon,
       due_date: date.getTime()
-    })
+    });
+    setDate(new Date(tempCoupon.due_date))
   },[tempCoupon])
   
   useEffect(() => {
@@ -33,7 +34,7 @@ function CouponModal({modalMode, tempCoupon, isOpen, setIsOpen, getCoupons}) {
     }
   },[isOpen])
 
-  const handleCloseProductModal = () => {
+  const handleCloseModal = () => {
     const modaInstance = Modal.getInstance(couponModalRef.current);
     modaInstance.hide();
     setIsOpen(false)
@@ -47,25 +48,14 @@ function CouponModal({modalMode, tempCoupon, isOpen, setIsOpen, getCoupons}) {
       [name]: type === "checkbox" ? checked : value
     })
   }
-  
-  const handleImageChange = (e, index) => {
-    const {value} = e.target;
-  
-    const newImages = [...modalData.imagesUrl];
-  
-    newImages[index] = value;
-  
-    setModalData({
-      ...modalData,
-    })
-  }
-  
 
   const createCoupon = async() => {
     try {
       await axios.post(`${BASE_URL}/v2/api/${API_PATH}/admin/coupon` , {
         data: {
           ...modalData,
+          due_date: date.getTime(),
+          percent: Number(modalData.percent),
           is_enabled: modalData.is_enabled ? 1 : 0
         }
       })
@@ -73,54 +63,38 @@ function CouponModal({modalMode, tempCoupon, isOpen, setIsOpen, getCoupons}) {
     } catch (error) {
       const { message } = error.response.data;
       dispatch(pushMessage({text: message.join("、"), status: 'fail'}))
+      console.log(error)
     }
   }
   
-  const updateProduct = async() => {
+  const updateCoupon = async() => {
     try {
-      await axios.put(`${BASE_URL}/v2/api/${API_PATH}/admin/coupon/${modalData.id}` , {
+      const res = await axios.put(`${BASE_URL}/v2/api/${API_PATH}/admin/coupon/${modalData.id}` , {
         data: {
           ...modalData,
-          origin_price: Number(modalData.origin_price),
-          price: Number(modalData.price),
+          due_date: date.getTime(),
+          percent: Number(modalData.percent),
           is_enabled: modalData.is_enabled ? 1 : 0
         }
-      })
-      dispatch(pushMessage({text: '成功修改產品', status: 'success'}))
+      });
+      console.log(res)
+      dispatch(pushMessage({text: '成功修改優惠卷', status: 'success'}))
     } catch (error) {
       dispatch(pushMessage({text: '修改產品失敗', status: 'fail'}))
+      console.log(error)
     }
   }
 
-  const handleUpdateProduct = async() => {
-    const apiCall = modalMode === 'create' ? createCoupon : updateProduct;
+  const handleUpdateCoupon = async() => {
+    const apiCall = modalMode === 'create' ? createCoupon : updateCoupon;
     try {
     await apiCall();
     getCoupons();
-    handleCloseProductModal();
+    handleCloseModal();
     } catch (error) {
       console.log(error);
     }
   }
-
-  // const handleFileChange = async (e) => {
-  //   const file = e.target.files[0];
-  //   const formData = new FormData();
-  //   formData.append('file-to-upload', file);
-  
-  //   try {
-  //     const res = await axios.post(`${BASE_URL}/v2/api/${API_PATH}/admin/upload`, formData);
-  //     const uploadedImageUrl = res.data.imageUrl;
-  
-  //     setModalData({
-  //       ...modalData,
-  //       imageUrl: uploadedImageUrl
-  //     })
-  //   } catch (error) {
-  //     // console.log(error);
-  //     dispatch(pushMessage({text: '上傳圖片失敗', status: 'fail'}))
-  //   }
-  // }
 
   return (
     <div ref={couponModalRef} id="productModal" className="modal" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
@@ -128,7 +102,7 @@ function CouponModal({modalMode, tempCoupon, isOpen, setIsOpen, getCoupons}) {
         <div className="modal-content border-0 shadow">
           <div className="modal-header border-bottom">
             <h5 className="modal-title fs-4">{modalMode === 'create' ? '新增優惠卷' : '編輯優惠卷'}</h5>
-            <button onClick={handleCloseProductModal} type="button" className="btn-close" aria-label="Close"></button>
+            <button onClick={handleCloseModal} type="button" className="btn-close" aria-label="Close"></button>
           </div>
 
           <div className="modal-body p-4">
@@ -222,10 +196,10 @@ function CouponModal({modalMode, tempCoupon, isOpen, setIsOpen, getCoupons}) {
           </div>
 
           <div className="modal-footer border-top bg-light">
-            <button onClick={handleCloseProductModal} type="button" className="btn btn-secondary">
+            <button onClick={handleCloseModal} type="button" className="btn btn-secondary">
               取消
             </button>
-            <button onClick={handleUpdateProduct} type="button" className="btn btn-primary">
+            <button onClick={handleUpdateCoupon} type="button" className="btn btn-primary">
               確認
             </button>
           </div>

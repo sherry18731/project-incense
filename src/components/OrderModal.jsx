@@ -99,6 +99,18 @@ function OrderModal({ closeProductModal, getOrders, tempOrder }) {
               </div>
             </div>
             <div className='mb-3 row'>
+              <span className='col-sm-2 col-form-label'>電話</span>
+              <div className='col-sm-10'>
+                <input
+                  type='text'
+                  readOnly
+                  className='form-control-plaintext'
+                  id='staticEmail'
+                  defaultValue={tempOrder?.user?.tel}
+                />
+              </div>
+            </div>
+            <div className='mb-3 row'>
               <span className='col-sm-2 col-form-label'>地址</span>
               <div className='col-sm-10'>
                 <input

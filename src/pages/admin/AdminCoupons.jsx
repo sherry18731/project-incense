@@ -5,7 +5,7 @@ import CouponModal from "../../components/CouponModal";
 import DelCouponModal from "../../components/DelCouponModal";
 import Toast from "../../components/Toast";
 import { useDispatch } from "react-redux";
-// import { pushMessage } from "../../redux/toastSlice";
+import { pushMessage } from "../../redux/toastSlice";
 import Loading from '../../components/Loading';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -15,7 +15,7 @@ const defaultModalState = {
   title: "",
   is_enabled: 0,
   percent: 0,
-  due_date: 1555459200,
+  due_date: new Date(),
   code: ""
 };
 
@@ -26,7 +26,6 @@ function AdminCoupons() {
   const [isDelCouponsModalOpen, setIsDelCouponsModalOpen] = useState(false);
   const [tempCoupon, setTempCoupon] = useState(defaultModalState);
   const [isScreenLoading, setIsScreenLoading] = useState(false)
-  // eslint-disable-next-line no-unused-vars
   const [date, setDate] = useState(new Date());
   const dispatch = useDispatch();
 
@@ -38,9 +37,8 @@ function AdminCoupons() {
       );
       setCoupons(res.data.coupons);
       setPageInfo(res.data.pagination);
-      dispatch()
     } catch (error) {
-      alert("取得產品失敗",error);
+      dispatch(pushMessage({ text: "取得產品失敗", status: "danger", error }));
     } finally {
       setIsScreenLoading(false);
     }
@@ -48,7 +46,6 @@ function AdminCoupons() {
 
   useEffect(() => {
     getCoupons()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
 
@@ -72,7 +69,6 @@ const handleOpenDelCouponModal = (item) => {
         case 'edit':
           setTempCoupon({
             ...coupon,
-          // ...defaultModalState,
           });
           console.log(coupon);
           setDate(new Date(coupon.due_date));
@@ -93,7 +89,6 @@ const handleOpenDelCouponModal = (item) => {
 
   useEffect(() => {
     getCoupons()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
@@ -146,7 +141,7 @@ const handleOpenDelCouponModal = (item) => {
       isOpen={isCouponsModalOpen} 
       setIsOpen={setIsCouponsModalOpen}
       getCoupons={getCoupons}
-      // setDate={setDate} 
+      setDate={setDate} 
       />
 
       <DelCouponModal 

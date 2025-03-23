@@ -12,7 +12,7 @@ export default function CartCheck() {
   const getCart = async (orderId) => {
     try {
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/order/${orderId}`)
-      setOrderData(res.data.order )
+      setOrderData( res.data.order )
     } catch (error) {
       console.log(error)
     }
@@ -23,9 +23,9 @@ export default function CartCheck() {
   }, [orderId])
 
   return (
-    <div className='card rounded-0 py-4'>
-      <div className='card-header border-bottom-0 bg-white px-4 py-0'>
-        <h2>課程預約細節</h2>
+    <div className='card border-0 bg-gray-04 rounded-0 py-4'>
+      <div className='card-header bg-gray-04 border-bottom-0 px-4 py-0'>
+        <p className="fw-semibold bg-primary-03 text-primary-01 text-center rounded p-3 mb-4">訂單詳情</p>
       </div>
       <div className='card-body px-4 py-0'>
         <ul className='list-group list-group-flush'>
@@ -36,19 +36,16 @@ export default function CartCheck() {
                   <img
                     src={item.product.imageUrl}
                     alt=''
-                    className='object-fit-cover me-2'
+                    className='object-fit-cover rounded me-2'
                     style={{ width: '60px', height: '60px' }}
                   />
                   <div className='w-100 d-flex flex-column'>
                     <div className='d-flex justify-content-between fw-bold'>
                       <h5>{item.product.title}</h5>
-                      <p className='mb-0'>x{item.qty}</p>
+                      <p className='mb-0'>人數：{item.qty}</p>
                     </div>
-                    <div className='d-flex justify-content-between mt-auto'>
-                      <p className='text-muted mb-0'>
-                        <small>NT${item.product.price}</small>
-                      </p>
-                      <p className='mb-0'>NT${item.final_total}</p>
+                    <div className='d-flex justify-content-end mt-auto'>
+                      <p className='mb-0'>NT${item.product.price}/每位</p>
                     </div>
                   </div>
                 </div>
@@ -57,8 +54,8 @@ export default function CartCheck() {
           })}
           <li className='list-group-item px-0 pb-0'>
             <div className='d-flex justify-content-between mt-2'>
-              <p className='mb-0 h4 fw-bold'>總計</p>
-              <p className='mb-0 h4 fw-bold'>NT${orderData.total}</p>
+              <p className='mb-0 h4 fw-bold'>總計<small className="fs-12 fw-light">*含折扣</small></p>
+              <p className='mb-0 h4 fw-bold'>NT${orderData?.total}</p>
             </div>
           </li>
         </ul>

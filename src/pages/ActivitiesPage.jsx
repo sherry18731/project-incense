@@ -1,6 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { useOutletContext, Link } from "react-router";
+import { useDispatch } from "react-redux";
+import { pushMessage } from "../redux/toastSlice";
+import Toast from "../components/Toast";
+
 import Pagination from "../components/Pagination";
 import Loading from "../components/Loading";
 
@@ -12,6 +16,8 @@ export default function ActivitiesPage() {
   const [isScreenLoading, setIsScreenLoading] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [pageInfo, setPageInfo] = useState({})
+  const { getCart } = useOutletContext();
+  const dispatch = useDispatch();
 
   const getProducts = async (page = 1) => {
     setIsScreenLoading(true);
@@ -20,7 +26,7 @@ export default function ActivitiesPage() {
       setProducts(res.data.products);
       setPageInfo(res.data.pagination);
     } catch (error) {
-      alert("取得產品失敗", error);
+      dispatch(pushMessage({ text: "取得產品失敗", status: "danger"}));
     } finally {
       setIsScreenLoading(false);
     }
@@ -36,12 +42,14 @@ export default function ActivitiesPage() {
       await axios.post(`${BASE_URL}/v2/api/${API_PATH}/cart`, {
         data: {
           product_id,
-          qty: Number(qty)
+          qty
         }
       });
-      alert("成功加入購物車");
+      dispatch(pushMessage({ text: "成功加入購物車", status: "success" }));
+      getCart();
     } catch (error) {
-      alert("加入購物車失敗", error);
+      dispatch(pushMessage({ text: "加入購物車失敗", status: "danger"}));
+      console.log(error)
     } finally {
       setIsLoading(false);
     }
@@ -53,6 +61,9 @@ export default function ActivitiesPage() {
       <Loading isScreenLoading={isScreenLoading}/>
         <div className="row justify-content-center">
           <div className="col-lg-8 col-md-10">
+            <div className="d-flex justify-content-between mb-3">
+              <h2 className="fs-5 hina-mincho-regular text-primary-02">香遇的日子</h2>
+            </div>
             <div className="row row-cols-1 g-5 mb-5">
               {
                 products.map((product) => (
@@ -65,10 +76,18 @@ export default function ActivitiesPage() {
                           alt={product.title}
                           style={{height: "180px"}}
                         />
-                        <span class="position-absolute top-0 start-0 badge fw-normal text-bg-primary-04 text-primary-01 m-3">{product.category}</span>
+                        <span className="position-absolute top-0 start-0 badge fw-normal text-bg-primary-04 text-primary-01 m-3">{product.category}</span>
                       </div>
                       <div className="card-body bg-gray-04 d-flex flex-column p-2">
                         <h4 className="my-1">{product.title}</h4>
+                        <p className="fs-10 my-1">  {new Date(product.date).toLocaleString("zh-TW", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false
+                          })}</p>
                         <p className="card-text text-muted mb-3">
                         {product.content}
                         </p>
@@ -76,11 +95,11 @@ export default function ActivitiesPage() {
                           <p className="text-theme-red-01 fw-semibold me-3">NT$ {product.price?.toLocaleString()}</p>
                           <p className="fs-10 text-gray-03 text-decoration-line-through">NT$ {product.origin_price?.toLocaleString()}</p>
                         </div>
-                        {/* <p className="">地點： {product.location}</p>
-                        <p className="">時間： {new Date(product.date).toLocaleString()}</p> */}
+                        {/* <p className="">地點： {product.location}</p> */}
+                        
                         <div className="d-flex justify-content-end mt-auto">
                           <Link to={`/product/${product.id}`} className="btn-sm btn btn-outline-primary-03 text-primary-01 me-3">活動詳情</Link>
-                          <Link onClick={addCartItem} to={`/product/${product.id}`} className="btn-sm btn btn-primary-03 text-primary-01">加入購物車</Link>
+                          <Link onClick={() => addCartItem(product.id, 1)} className="btn-sm btn btn-primary-03 text-primary-01">加入購物車</Link>
                         </div>
                       </div>
                     </div>
@@ -92,40 +111,9 @@ export default function ActivitiesPage() {
 
           </div>
         </div>
-        {/* <nav className="d-flex justify-content-center">
-          <ul className="pagination">
-            <li className="page-item">
-              <a className="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">«</span>
-              </a>
-            </li>
-            <li className="page-item active">
-              <a className="page-link" href="#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">»</span>
-              </a>
-            </li>
-          </ul>
-        </nav> */}
         <Pagination pageInfo={pageInfo} handlePageChange={getProducts}></Pagination>
-        
       </div>
-      
-
+      <Toast/>
     </>
   )
 }

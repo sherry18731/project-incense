@@ -10,14 +10,15 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 function ProductModal({modalMode, tempProduct, isOpen, setIsOpen, getProducts}) {
   const ProductModalRef = useRef(null)
   const [modalData, setModalData] = useState(tempProduct)
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(tempProduct?.date ? new Date(tempProduct.date) : new Date());
   const dispatch = useDispatch();
 
   useEffect(() => {
     setModalData({
       ...tempProduct
-    })
-  },[tempProduct])
+    });
+    setDate(tempProduct?.date ? new Date(tempProduct.date) : new Date());
+  }, [tempProduct]);
   
   useEffect(() => {
     new Modal(ProductModalRef.current,{
@@ -85,6 +86,7 @@ function ProductModal({modalMode, tempProduct, isOpen, setIsOpen, getProducts}) 
       await axios.post(`${BASE_URL}/v2/api/${API_PATH}/admin/product` , {
         data: {
           ...modalData,
+          date: date.getTime(),
           origin_price: Number(modalData.origin_price),
           price: Number(modalData.price),
           is_enabled: modalData.is_enabled ? 1 : 0
@@ -102,6 +104,7 @@ function ProductModal({modalMode, tempProduct, isOpen, setIsOpen, getProducts}) 
       await axios.put(`${BASE_URL}/v2/api/${API_PATH}/admin/product/${modalData.id}` , {
         data: {
           ...modalData,
+          date: date.getTime(),
           origin_price: Number(modalData.origin_price),
           price: Number(modalData.price),
           is_enabled: modalData.is_enabled ? 1 : 0

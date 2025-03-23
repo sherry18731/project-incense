@@ -1,34 +1,66 @@
-import { Link } from "react-router"
+import { useEffect, useState } from "react";
+import { useOutletContext, useNavigate, Link, useParams } from "react-router-dom"
 import CartCheck from "../components/CartCheck"
+import CartContact from "../components/CartContact"
+import axios from "axios"
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+const API_PATH = import.meta.env.VITE_API_PATH;
 
 export default function CheckoutSuccess() {
+  const { orderId } = useParams();
+  const [ orderData, setOrderData ] = useState({})
+  const navigate = useNavigate();
+
+  const getCart = async (orderId) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/order/${orderId}`)
+      setOrderData( res.data.order )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCart(orderId);
+  },[orderId])
+
+  const payOrder = async () => {
+    if (!orderId) {
+      console.error("orderId 未定義");
+      return;
+    }
+    try {
+      const res = await axios.post(`${BASE_URL}/v2/api/${API_PATH}/pay/${orderId}`,{
+        "success": true,
+        "message": "付款完成"
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    navigate(`/pay-success/${orderId}`)
+  }
 
   return (
     <div className='container full-height'>
-      <div
-        style={{
-          minHeight: '200px',
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1480399129128-2066acb5009e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80)',
-          backgroundPosition: 'center center',
-        }}
-      ></div>
-      <div className='mt-5 mb-7'>
-        <div className='row'>
-          <div className='col-md-6'>
-            <h2>課程預約成功</h2>
-            <p className='text-muted'>
-              親愛的朋友，感謝您在本平台訂餐。我們非常感激您對我們的信任和支持，讓我們有機會為您提供優質的服務。
+      <div className='my-7'>
+        <div className='row justify-content-center'>
+          <div className='col-md-4'>
+          <h3 className='text-primary-02 fs-5 hina-mincho-regular'>確認訂單</h3>
+            <p className='text-primary-01'>
+              請您確認訂單資訊
             </p>
-            <p className='text-muted'>
-              感謝您選擇本平台，祝您生活愉快！
+            <p className='text-primary-01'>
+              若有任何問題請與我們聯繫，謝謝
             </p>
-            <Link to='/' className='btn btn-outline-dark me-2 rounded-0 mb-4'>
-              回到首頁
-            </Link>
+            <div className="d-flex justify-content-end mt-5">
+              <Link to={`/`} className="btn btn btn-outline-primary-03 text-primary-01 me-3">回到首頁</Link>
+              <Link onClick={payOrder} className="btn btn btn-primary-03 text-primary-01">前往結賬</Link>
+            </div>
           </div>
-          <div className='col-md-6'>
+          <div className='col-md-4 '>
             <CartCheck />
+            <CartContact />
           </div>
         </div>
       </div>

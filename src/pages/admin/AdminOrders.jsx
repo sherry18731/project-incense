@@ -29,7 +29,6 @@ function AdminOrders() {
     setIsScreenLoading(true);
     try {
       const res = await axios.get(`${BASE_URL}/v2/api/${API_PATH}/admin/orders?page=${page}`);
-      console.log(res);
       setOrders(res.data.orders);
       setPagination(res.data.pagination);
     } catch (error) {

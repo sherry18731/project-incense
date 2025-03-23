@@ -1,4 +1,8 @@
 import { Link } from 'react-router';
+import BackToTopButton from '../components/BackToTopButton';
+import ServicesSection from '../components/home/ServicesSection';
+import ActivitiesSection from '../components/home/ActivitiesSection';
+import AboutSection from '../components/home/AboutSection';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 
 AOS.init();
@@ -6,6 +10,7 @@ AOS.init();
 export default function Home() {
 
   return (<>
+  <BackToTopButton />
     <section className="banner position-relative overflow-hidden">
       <div className="banner-wrap position-absolute h-100 z-0">
         <span></span>
@@ -26,6 +31,8 @@ export default function Home() {
         </div>
       </div>
     </section>
+
+    <ServicesSection />
     
     <section 
       style={{
@@ -45,5 +52,9 @@ export default function Home() {
         </div>
       </div>
     </section>
+
+    <ActivitiesSection />
+    <AboutSection />
+    
     </>);
 }

@@ -8,15 +8,16 @@ import ActivitieDetail from '../pages/ActivitieDetail';
 import LoginPage from '../pages/LoginPage';
 import Center from '../pages/Center'; 
 import Cart from '../pages/Cart';
-import Checkout from '../pages/Checkout';
+// import Checkout from '../pages/Checkout';
 import CheckoutSuccess from '../pages/CheckoutSuccess';
+import PaySuccess from '../pages/PaySuccess';
 
 // 後台
 import Dashboard from '../pages/admin/Dashboard';
 import AdminActivities from '../pages/admin/AdminActivities'; 
 import AdminCoupons from '../pages/admin/AdminCoupons';
 import AdminOrders from '../pages/admin/AdminOrders';
-import { element } from 'prop-types';
+// import { element } from 'prop-types';
 
 const routes = [
   {
@@ -47,13 +48,17 @@ const routes = [
         path:'cart',
         element: <Cart />,
       },
-      {
-        path:'checkout',
-        element: <Checkout />,
-      },
+      // {
+      //   path:'checkout',
+      //   element: <Checkout />,
+      // },
       {
         path: 'checkout-success/:orderId',
         element: <CheckoutSuccess />
+      },
+      {
+        path: 'pay-success/:orderId',
+        element: <PaySuccess />
       },
       {
         path:'login',

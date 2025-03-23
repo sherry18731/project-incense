@@ -22,7 +22,7 @@ const defaultModalState = {
   content: "",
   is_enabled: 0,
   imagesUrl: [],
-  date: 1555459200,
+  date: new Date(),
   location: ""
 };
 
@@ -32,6 +32,7 @@ function AdminActivities() {
   const [isProductsModalOpen, setIsProductsModalOpen] = useState(false)
   const [isDelProductsModalOpen, setIsDelProductsModalOpen] = useState(false)
   const [isScreenLoading, setIsScreenLoading] = useState(false)
+  const [date, setDate] = useState(new Date());
   const dispatch = useDispatch();
 
   const getProducts = async (page = 1) => {
@@ -40,6 +41,7 @@ function AdminActivities() {
       const res = await axios.get(
         `${BASE_URL}/v2/api/${API_PATH}/admin/products?page=${page}`
       );
+      console.log(res)
       setProducts(res.data.products);
       setPageInfo(res.data.pagination);
     } catch (error) {
@@ -52,7 +54,6 @@ function AdminActivities() {
 
   useEffect(() => {
     getProducts()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
 
@@ -69,6 +70,7 @@ const [tempProduct, setTempProduct] = useState(defaultModalState);
     switch (mode) {
       case 'create':
         setTempProduct(defaultModalState);
+        setDate(new Date());
         break;
   
         case 'edit':
@@ -77,6 +79,7 @@ const [tempProduct, setTempProduct] = useState(defaultModalState);
           ...product,
           imagesUrl: product.imagesUrl || [],
           });
+          setDate(new Date(product.date));
           break;
     
       default:
@@ -85,6 +88,7 @@ const [tempProduct, setTempProduct] = useState(defaultModalState);
   
     setIsProductsModalOpen(true)
   }
+  
 
   const  [pageInfo, setPageInfo] = useState({})
 
@@ -94,7 +98,6 @@ const [tempProduct, setTempProduct] = useState(defaultModalState);
 
   useEffect(() => {
     getProducts()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (

@@ -12,15 +12,15 @@ function Pagination({pageInfo, handlePageChange}) {
       <nav>
         <ul className="pagination">
           <li className={`page-item ${!pageInfo.has_pre && 'disabled'}`}>
-            <a onClick={handleClick(pageInfo.current_page - 1)} className="page-link" href="#">
+            <a onClick={handleClick(pageInfo.current_page - 1)} className="page-link " href="#">
               上一頁
             </a>
           </li>
           
           {
             Array.from({length: pageInfo.total_pages}).map((_, index) => (
-              <li key={index} className={`page-item ${pageInfo.current_page === index +1 && 'active'}`}>
-              <a onClick={handleClick(index + 1)} className="page-link bg-primary-01 border-primary-02" href="#">
+              <li key={index} className={`page-item ${pageInfo.current_page === index +1 && 'active text-white'}`}>
+              <a onClick={handleClick(index + 1)} className="page-link bg-primary-02 border-primary-02" href="#">
                 {index +1} 
               </a>
             </li>

@@ -1,7 +1,7 @@
 
 export default function ProgressBar() {
   return (
-    <div className="d-flex justify-content-center mt-5">
+    <div className="d-flex justify-content-center my-5">
       <div className="w-50">
         <div className="position-relative  my-4">
           <div className="progress" style={{ height: 1 }}>
@@ -35,27 +35,6 @@ export default function ProgressBar() {
           >
             3
           </button>
-        </div>
-        <div className="position-relative my-8">
-          <div className="progress" style={{ height: 0 }}>
-            <div
-              className="progress-bar"
-              role="progressbar"
-            />
-          </div>
-          <p
-            className="position-absolute top-0 start-0 translate-middle"
-          >
-            步驟一：確認報名內容
-          </p>
-          <p
-            className="position-absolute top-0 start-50 translate-middle"
-          >
-          </p>
-          <p
-            className="position-absolute top-0 start-100 translate-middle"
-          >
-          </p>
         </div>
       </div>
     </div>
